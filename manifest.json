@@ -8,6 +8,6 @@
         "type": "image/png"
       }
     ],
-    "start_url": "/index.html",
+    "start_url": "https://enlace-de.github.io/pruebas_PA-/",
     "display": "standalone"
   }
