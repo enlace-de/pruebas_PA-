@@ -87,15 +87,30 @@ logoImage.addEventListener('click', () => {
 
 // funcion agregar a pagina de inicio
 
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  // Prevent Chrome 67 and earlier from automatically showing the prompt
+  e.preventDefault();
+  // Stash the event so it can be triggered later.
+  deferredPrompt = e;
+});
+
 function addToHomeScreen() {
-    if ('addToHomeScreen' in window) {
-      // Utiliza la función addToHomeScreen para mostrar el mensaje de agregar a la pantalla de inicio
-      window.addToHomeScreen();
-    } else {
-      // Fallback si la función no está disponible (por ejemplo, en navegadores que no admiten la funcionalidad)
-      alert("Para agregar a la pantalla de inicio, utiliza la opción del navegador.");
-    }
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('User accepted the A2HS prompt');
+      } else {
+        console.log('User dismissed the A2HS prompt');
+      }
+      deferredPrompt = null;
+    });
+  } else {
+    alert("Para agregar a la pantalla de inicio, utiliza la opción del navegador.");
   }
+}
 
 
 
